@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Colegiada - Cadastro de questões</title>
+</head>
+<body>
+<div th:insert="header"></div>
+
+<div class="container">
+    <h2>Questões</h2>
+    <h5>Adicionar/Editar/Pesquisar:</h5>
+    <form class="form-narrow form-horizontal" method="post"
+          th:action="@{/questoes/saveList}" th:object="${questao}">
+		          
+        <input type="hidden" id="id" th:field="*{id}"/>
+        <table class="table table-striped">
+            <tr>
+                <td>Tipo de questão:</td>
+                <td>
+                    <select class="form-control" id="tipoQuestao" th:field="*{TipoQuestao}">
+                        <option value="">Selecione tipo de questão</option>
+                        <option style="text-transform: capitalize"
+                                th:each="item : ${listaTipoQuestao}"
+                                th:value="${item}"
+                                th:text="${item.text}" selected="selected"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Topico:</td>
+                <td>
+                    <select class="form-control" id="topico" th:field="*{topico}">
+                        <option value="">Selecione o topico</option>
+                        <option style="text-transform: capitalize"
+                                th:each="item : ${listaTodosTopicos}"
+                                th:value="${item.id}"
+                                th:text="${item.descricao}" selected="selected"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Enunciado</td>
+                <td>
+                    <textarea class="form-control" rows="4"
+                               style="margin-top: 10px;"  placeholder="Enunciado da questão"
+                               name="enunciado" th:inline="text" th:field="*{enunciado}">
+                    </textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>Nível de Complexidade:</td>
+                <td>
+                    <select class="form-control" id="nivelComplexidade" th:field="*{NivelComplexidade}">
+                        <option value="">Selecione o nível da complexidade</option>
+                        <option style="text-transform: capitalize"
+                                th:each="item : ${listaNivelComplexidade}"
+                                th:value="${item}"
+                                th:text="${item.text}" selected="selected"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Autor:</td>
+                <td>
+                    <select class="form-control" id="autor" th:field="*{autor}">
+                        <option value="">Selecione o autor</option>
+                        <option style="text-transform: capitalize"
+                                th:each="item : ${listarTodosProfessores}"
+                                th:value="${item.id}"
+                                th:text="${item.nome}" selected="selected"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">
+                    <button type="submit" class="btn btn-primary" name="action" value="salvar">Salvar</button>&nbsp;&nbsp;
+                    <button type="submit" class="btn btn-info" name="action" value="pesquisar">Pesquisar</button>&nbsp;&nbsp;
+                </td>
+            </tr>
+        </table>
+        <div class="alert alert-success" th:if="${mensagemSucesso}"
+             th:text="${mensagemSucesso}"></div>
+        <div class="alert alert-danger" th:if="${mensagemErro}"
+             th:text="${mensagemErro}"></div>
+    </form>
+    <hr/>
+    <h5>Lista de Questões:</h5>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Tipo de questão</th>
+            <th>Enunciado</th>
+            <th>Topico</th>
+            <th>Nível de Complexidade</th>
+            <th>Autor</th>
+            <th>Editar</th>
+            <th>Remover</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="questao : ${listaTodas}">
+            <td th:text="${questao.TipoQuestao.text}"></td>
+            <td th:text="${questao.enunciado}"></td>
+            <td th:text="${questao.topico}"></td>
+            <td th:text="${questao.NivelComplexidade.text}"></td>
+            <td th:text="${questao.autor}"></td>
+            <td><a class="btn btn-warning"
+                   th:href="@{/disciplinas/edit/{id}(id=${questao.id})}">Editar</a></td>
+            <td><a class="btn btn-warning"
+                   th:href="@{/disciplinas/remover/{id}(id=${questao.id})}">Remover</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <hr>
+
+    <h6>
+        <a th:href="@{/}">Home</a>
+    </h6>
+</div>
+
+</body>
+</html>
